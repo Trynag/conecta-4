@@ -1,0 +1,29 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  width: 700px;
+}
+
+.row {
+  display: grid;
+  gap: 12px;
+}
+
+.row:hover .square {
+  box-shadow: 2px 5px 33px 0px rgba(0,0,0,0.75);
+}
+
