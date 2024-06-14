@@ -14,16 +14,18 @@ function App () {
   const checkWinner = ({ boardToCheck, rowIndex, colIndex }) => {
     const cell = boardToCheck[rowIndex]
 
-    // console.clear()
+    console.clear()
+
+    // Buscar la ultima posicion con un elemento en el array, luego validarlos desde ese elemento hacia abajo
 
     for (let i = 1; i < 4; i++) {
-      if (!cell[colIndex + i]) return
-      else if (cell[colIndex] === cell[colIndex + i] && i === 3) return cell[colIndex]
-      // console.table({
-      //   original: cell[colIndex],
-      //   validado: cell[colIndex + i],
-      //   iterador: i
-      // })
+      // if (cell[colIndex + i] === undefined) return
+      if (cell[colIndex] === cell[colIndex + i]) return cell[colIndex]
+      console.table({
+        original: cell[colIndex],
+        validado: cell[colIndex + i],
+        iterator: i
+      })
     }
 
     return null
