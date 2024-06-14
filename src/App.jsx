@@ -12,21 +12,24 @@ function App () {
   const [winner, setWinner] = useState(null)
 
   const checkWinner = ({ boardToCheck, rowIndex, colIndex }) => {
-    const cell = boardToCheck[rowIndex]
+    const cellVertical = boardToCheck[rowIndex]
+    const cellHorizontal = boardToCheck[colIndex]
 
     console.clear()
+    console.log(cellVertical)
 
-    // Buscar la ultima posicion con un elemento en el array, luego validarlos desde ese elemento hacia abajo
 
-    for (let i = 1; i < 4; i++) {
-      // if (cell[colIndex + i] === undefined) return
-      if (cell[colIndex] === cell[colIndex + i]) return cell[colIndex]
-      console.table({
-        original: cell[colIndex],
-        validado: cell[colIndex + i],
-        iterator: i
-      })
-    }
+    if (
+      cellVertical[colIndex] === cellVertical[colIndex + 1] &&
+      cellVertical[colIndex] === cellVertical[colIndex + 2] &&
+      cellVertical[colIndex] === cellVertical[colIndex + 3]
+    ) return cellVertical[colIndex]
+
+    else if (
+      cellHorizontal[rowIndex] === cellHorizontal[rowIndex + 1] &&
+      cellHorizontal[rowIndex] === cellHorizontal[rowIndex + 2] &&
+      cellHorizontal[rowIndex] === cellHorizontal[rowIndex + 3]
+    ) return cellHorizontal[rowIndex]
 
     return null
   }
@@ -38,10 +41,12 @@ function App () {
     setTurn(newTurn)
 
     const newBoard = [...board].map(row => [...row])
+    let colIndexWithTurn
 
-    for (let colIndex = 5; colIndex >= 0; colIndex--) {
-      if (newBoard[rowIndex][colIndex] === null) {
-        newBoard[rowIndex][colIndex] = turn
+    for (let col = 5; col >= 0; col--) {
+      if (newBoard[rowIndex][col] === null) {
+        newBoard[rowIndex][col] = turn
+        colIndexWithTurn = col
         break
       }
     }
@@ -50,7 +55,7 @@ function App () {
     const newWinner = checkWinner({
       boardToCheck: newBoard,
       rowIndex,
-      colIndex
+      colIndex: colIndexWithTurn
     })
 
     if (newWinner) {
