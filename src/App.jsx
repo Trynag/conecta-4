@@ -2,14 +2,27 @@ import './App.css'
 import { useState } from 'react'
 import { Square } from './components/Square'
 import { TURNS } from './logic/constants'
+import confetti from 'canvas-confetti'
 
 // Mantener la fila, mover columna
 
 function App () {
   const [turn, setTurn] = useState(TURNS.X)
   const [board, setBoard] = useState(Array.from({ length: 7 }, () => Array(6).fill(null)))
+  const [winner, setWinner] = useState(null)
 
-  const updateBoard = ({ rowIndex }) => {
+  const checkWinner = ({ boardToCheck, rowIndex, colIndex }) => {
+    // let i = 3;
+    for (const cell of boardToCheck[rowIndex]) {
+      console.log(cell)
+    }
+
+    return null
+  }
+
+  const updateBoard = ({ rowIndex, colIndex }) => {
+    if (board[rowIndex][colIndex] || winner) return
+
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
     setTurn(newTurn)
 
@@ -21,7 +34,18 @@ function App () {
         break
       }
     }
+
     setBoard(newBoard)
+    const newWinner = checkWinner({
+      boardToCheck: newBoard,
+      rowIndex,
+      colIndex
+    })
+
+    if (newWinner) {
+      confetti()
+      setWinner(newWinner)
+    }
   }
 
   return (
@@ -38,7 +62,7 @@ function App () {
                       <Square
                         key={`${rowIndex}-${colIndex}`}
                         index={colIndex}
-                        updateBoard={() => updateBoard({ rowIndex })}
+                        updateBoard={() => updateBoard({ rowIndex, colIndex })}
                       >
                         {cell}
                       </Square>
@@ -55,6 +79,12 @@ function App () {
             <Square isSelected={turn === TURNS.X}>{TURNS.X}</Square>
             <Square isSelected={turn === TURNS.O} >{TURNS.O}</Square>
           </div>
+          {
+            winner && <p style={{
+              fontSize: '28px',
+              fontWeight: 'bold'
+            }}>{winner === false ? `Empate ${winner}` : `Gano ${winner}`}</p>
+          }
         </section>
       </main>
     </>
