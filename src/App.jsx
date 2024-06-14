@@ -12,9 +12,18 @@ function App () {
   const [winner, setWinner] = useState(null)
 
   const checkWinner = ({ boardToCheck, rowIndex, colIndex }) => {
-    // let i = 3;
-    for (const cell of boardToCheck[rowIndex]) {
-      console.log(cell)
+    const cell = boardToCheck[rowIndex]
+
+    // console.clear()
+
+    for (let i = 1; i < 4; i++) {
+      if (!cell[colIndex + i]) return
+      else if (cell[colIndex] === cell[colIndex + i] && i === 3) return cell[colIndex]
+      // console.table({
+      //   original: cell[colIndex],
+      //   validado: cell[colIndex + i],
+      //   iterador: i
+      // })
     }
 
     return null
