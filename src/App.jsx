@@ -16,17 +16,11 @@ function App () {
 
     console.clear()
 
-    // Buscar la ultima posicion con un elemento en el array, luego validarlos desde ese elemento hacia abajo
-
-    for (let i = 1; i < 4; i++) {
-      // if (cell[colIndex + i] === undefined) return
-      if (cell[colIndex] === cell[colIndex + i]) return cell[colIndex]
-      console.table({
-        original: cell[colIndex],
-        validado: cell[colIndex + i],
-        iterator: i
-      })
-    }
+    if (
+      cell[colIndex] === cell[colIndex + 1] &&
+      cell[colIndex] === cell[colIndex + 2] &&
+      cell[colIndex] === cell[colIndex + 3]
+    ) return cell[colIndex]
 
     return null
   }
