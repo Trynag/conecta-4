@@ -12,15 +12,99 @@ function App () {
   const [winner, setWinner] = useState(null)
 
   const checkWinner = ({ boardToCheck, rowIndex, colIndex }) => {
-    const cell = boardToCheck[rowIndex]
-
     console.clear()
 
+    let colWithTurn
+
+    for (let col = 6; col >= 0; col--) {
+      if (boardToCheck[rowIndex][col - 1] === null || col === 0) {
+        console.log(col)
+        colWithTurn = col
+        break
+      }
+    }
+
+    const colToCheck = boardToCheck[rowIndex]
+    const rowToCheck = []
+
+    for (let i = 0; i <= 6; i++) {
+      rowToCheck.push(boardToCheck[i][colWithTurn])
+    }
+
+    console.table({
+      Col: colToCheck,
+      Row: rowToCheck
+    })
+    console.table(boardToCheck)
+
+    // Validate column way
+
+    console.log(colWithTurn, rowIndex)
+    console.log('Col')
+    console.table({
+      original: colToCheck[colIndex],
+      eval1: colToCheck[colIndex + 1],
+      eval2: colToCheck[colIndex + 2],
+      eval3: colToCheck[colIndex + 3]
+    })
+    console.log('')
+    console.log('Row')
+    console.table({
+      original: rowToCheck[rowIndex],
+      eval1: rowToCheck[rowIndex - 1],
+      eval2: rowToCheck[rowIndex - 2],
+      eval3: rowToCheck[rowIndex - 3]
+    })
+
+    // if (
+    //   rowToCheck[rowIndex] === rowToCheck[rowIndex + 1] &&
+    //   rowToCheck[rowIndex] === rowToCheck[rowIndex + 2] &&
+    //   rowToCheck[rowIndex] === rowToCheck[rowIndex + 3]
+    // ) return rowToCheck[rowIndex]
+
     if (
-      cell[colIndex] === cell[colIndex + 1] &&
-      cell[colIndex] === cell[colIndex + 2] &&
-      cell[colIndex] === cell[colIndex + 3]
-    ) return cell[colIndex]
+      rowToCheck[rowIndex] === rowToCheck[rowIndex - 1] &&
+      rowToCheck[rowIndex] === rowToCheck[rowIndex - 2] &&
+      rowToCheck[rowIndex] === rowToCheck[rowIndex - 3]
+    ) return rowToCheck[rowIndex]
+
+    if (
+      colToCheck[colIndex] === colToCheck[colIndex + 1] &&
+      colToCheck[colIndex] === colToCheck[colIndex + 2] &&
+      colToCheck[colIndex] === colToCheck[colIndex + 3]
+    ) return colToCheck[colIndex]
+
+    // if (
+    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex][colIndex + 1] &&
+    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex][colIndex + 2] &&
+    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex][colIndex + 3]
+    // ) return boardToCheck[rowIndex][colIndex]
+
+    // Validate row way to Left-Right, last Right-left
+
+    // console.log(rowIndex, (rowIndex - 1) < 0 || (rowIndex + 1) > 6)
+
+    // if ((rowIndex - 1) < 0 || (rowIndex + 1) > 6) return null
+    // else if (
+    //   ((rowToCheck[rowIndex] === rowToCheck[rowIndex + 1]) || (rowToCheck[rowIndex] === rowToCheck[rowIndex - 1])) &&
+    //   ((rowToCheck[rowIndex] === rowToCheck[rowIndex + 2]) || (rowToCheck[rowIndex] === rowToCheck[rowIndex - 2])) &&
+    //   ((rowToCheck[rowIndex] === rowToCheck[rowIndex + 3]) || (rowToCheck[rowIndex] === rowToCheck[rowIndex - 3]))
+    // ) return rowToCheck[rowIndex]
+
+    // else if (
+    //   ((boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex + 1][colWithTurn]) || boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex - 1][colWithTurn]) &&
+    //   ((boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex + 2][colWithTurn]) || boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex - 2][colWithTurn]) &&
+    //   ((boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex + 3][colWithTurn]) || boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex - 3][colWithTurn])
+    // ) return boardToCheck[rowIndex][colWithTurn]
+    // else if (
+
+    // ) return
+
+    // if (
+    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex + 1][colIndex] &&
+    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex + 2][colIndex] &&
+    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex + 3][colIndex]
+    // ) return boardToCheck[rowIndex][colIndex]
 
     return null
   }
@@ -47,10 +131,12 @@ function App () {
       colIndex
     })
 
+    console.log(newWinner)
+
     if (newWinner) {
       confetti()
       setWinner(newWinner)
-    }
+    } // else if (!newBoard.includes(null)) setWinner(false)
   }
 
   return (
