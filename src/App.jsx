@@ -18,7 +18,6 @@ function App () {
 
     for (let col = 6; col >= 0; col--) {
       if (boardToCheck[rowIndex][col - 1] === null || col === 0) {
-        console.log(col)
         colWithTurn = col
         break
       }
@@ -51,16 +50,16 @@ function App () {
     console.log('Row')
     console.table({
       original: rowToCheck[rowIndex],
-      eval1: rowToCheck[rowIndex - 1],
-      eval2: rowToCheck[rowIndex - 2],
-      eval3: rowToCheck[rowIndex - 3]
+      eval1: rowToCheck[rowIndex + 1],
+      eval2: rowToCheck[rowIndex + 2],
+      eval3: rowToCheck[rowIndex + 3]
     })
 
-    // if (
-    //   rowToCheck[rowIndex] === rowToCheck[rowIndex + 1] &&
-    //   rowToCheck[rowIndex] === rowToCheck[rowIndex + 2] &&
-    //   rowToCheck[rowIndex] === rowToCheck[rowIndex + 3]
-    // ) return rowToCheck[rowIndex]
+    if (
+      rowToCheck[rowIndex] === rowToCheck[rowIndex + 1] &&
+      rowToCheck[rowIndex] === rowToCheck[rowIndex + 2] &&
+      rowToCheck[rowIndex] === rowToCheck[rowIndex + 3]
+    ) return rowToCheck[rowIndex]
 
     if (
       rowToCheck[rowIndex] === rowToCheck[rowIndex - 1] &&
