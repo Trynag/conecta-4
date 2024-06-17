@@ -15,6 +15,7 @@ function App () {
     console.clear()
 
     let colWithTurn
+    let rowWithTurn
 
     for (let col = 6; col >= 0; col--) {
       if (boardToCheck[rowIndex][col - 1] === null || col === 0) {
@@ -38,13 +39,13 @@ function App () {
 
     // Validate column way
 
-    console.log(colWithTurn, rowIndex)
+    console.log(colWithTurn, rowWithTurn, rowIndex)
     console.log('Col')
     console.table({
-      original: colToCheck[colIndex],
-      eval1: colToCheck[colIndex + 1],
-      eval2: colToCheck[colIndex + 2],
-      eval3: colToCheck[colIndex + 3]
+      original: colToCheck[colWithTurn],
+      eval1: colToCheck[colWithTurn + 1],
+      eval2: colToCheck[colWithTurn + 2],
+      eval3: colToCheck[colWithTurn + 3]
     })
     console.log('')
     console.log('Row')
@@ -68,42 +69,10 @@ function App () {
     ) return rowToCheck[rowIndex]
 
     if (
-      colToCheck[colIndex] === colToCheck[colIndex + 1] &&
-      colToCheck[colIndex] === colToCheck[colIndex + 2] &&
-      colToCheck[colIndex] === colToCheck[colIndex + 3]
-    ) return colToCheck[colIndex]
-
-    // if (
-    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex][colIndex + 1] &&
-    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex][colIndex + 2] &&
-    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex][colIndex + 3]
-    // ) return boardToCheck[rowIndex][colIndex]
-
-    // Validate row way to Left-Right, last Right-left
-
-    // console.log(rowIndex, (rowIndex - 1) < 0 || (rowIndex + 1) > 6)
-
-    // if ((rowIndex - 1) < 0 || (rowIndex + 1) > 6) return null
-    // else if (
-    //   ((rowToCheck[rowIndex] === rowToCheck[rowIndex + 1]) || (rowToCheck[rowIndex] === rowToCheck[rowIndex - 1])) &&
-    //   ((rowToCheck[rowIndex] === rowToCheck[rowIndex + 2]) || (rowToCheck[rowIndex] === rowToCheck[rowIndex - 2])) &&
-    //   ((rowToCheck[rowIndex] === rowToCheck[rowIndex + 3]) || (rowToCheck[rowIndex] === rowToCheck[rowIndex - 3]))
-    // ) return rowToCheck[rowIndex]
-
-    // else if (
-    //   ((boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex + 1][colWithTurn]) || boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex - 1][colWithTurn]) &&
-    //   ((boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex + 2][colWithTurn]) || boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex - 2][colWithTurn]) &&
-    //   ((boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex + 3][colWithTurn]) || boardToCheck[rowIndex][colWithTurn] === boardToCheck[rowIndex - 3][colWithTurn])
-    // ) return boardToCheck[rowIndex][colWithTurn]
-    // else if (
-
-    // ) return
-
-    // if (
-    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex + 1][colIndex] &&
-    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex + 2][colIndex] &&
-    //   boardToCheck[rowIndex][colIndex] === boardToCheck[rowIndex + 3][colIndex]
-    // ) return boardToCheck[rowIndex][colIndex]
+      colToCheck[colWithTurn] === colToCheck[colWithTurn + 1] &&
+      colToCheck[colWithTurn] === colToCheck[colWithTurn + 2] &&
+      colToCheck[colWithTurn] === colToCheck[colWithTurn + 3]
+    ) return colToCheck[colWithTurn]
 
     return null
   }
