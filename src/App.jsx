@@ -11,25 +11,85 @@ function App () {
   const [board, setBoard] = useState(Array.from({ length: 7 }, () => Array(6).fill(null)))
   const [winner, setWinner] = useState(null)
 
-  const checkWinner = ({ boardToCheck, rowIndex, colIndex }) => {
-    const cellVertical = boardToCheck[rowIndex]
-    const cellHorizontal = boardToCheck[colIndex]
-
+  const checkWinner = ({ boardToCheck, rowIndex }) => {
     console.clear()
-    console.log(cellVertical)
 
+    let colWithTurn
+
+    for (let col = 6; col >= 0; col--) {
+      if (boardToCheck[rowIndex][col - 1] === null || col === 0) {
+        colWithTurn = col
+        break
+      }
+    }
+
+    const colToCheck = boardToCheck[rowIndex]
+    const rowToCheck = []
+
+    for (let i = 0; i <= 6; i++) {
+      rowToCheck.push(boardToCheck[i][colWithTurn])
+    }
+
+    console.table({
+      Col: colToCheck,
+      Row: rowToCheck
+    })
+    console.table(boardToCheck)
+    console.log('Col')
+    console.table({
+      original: colToCheck[colWithTurn],
+      eval1: colToCheck[colWithTurn + 1],
+      eval2: colToCheck[colWithTurn + 2],
+      eval3: colToCheck[colWithTurn + 3]
+    })
+    console.log('Row')
+    console.table({
+      original: rowToCheck[rowIndex],
+      eval1: rowToCheck[rowIndex + 1],
+      eval2: rowToCheck[rowIndex + 2],
+      eval3: rowToCheck[rowIndex + 3]
+    })
+    console.log('Dig right')
+    // console.log((rowIndex < 6 && colWithTurn < 5) && `${rowIndex + 1} - ${colWithTurn + 1} - ${boardToCheck[rowIndex + 1][colWithTurn + 1]}`)
+    // console.log(`${rowIndex} - ${colWithTurn}`)
+    // console.table({
+    //   original: boardToCheck[rowIndex][colWithTurn],
+    //   eval1: (rowIndex < 6 && colWithTurn < 5) && boardToCheck[rowIndex + 1][colWithTurn + 1],
+    //   eval2: (rowIndex < 5 && colWithTurn < 4) && boardToCheck[rowIndex + 2][colWithTurn + 2],
+    //   eval3: (rowIndex < 4 && colWithTurn < 3) && boardToCheck[rowIndex + 3][colWithTurn + 3]
+    // })
 
     if (
-      cellVertical[colIndex] === cellVertical[colIndex + 1] &&
-      cellVertical[colIndex] === cellVertical[colIndex + 2] &&
-      cellVertical[colIndex] === cellVertical[colIndex + 3]
-    ) return cellVertical[colIndex]
+      rowToCheck[rowIndex] === rowToCheck[rowIndex + 1] &&
+      rowToCheck[rowIndex] === rowToCheck[rowIndex + 2] &&
+      rowToCheck[rowIndex] === rowToCheck[rowIndex + 3]
+    ) return rowToCheck[rowIndex]
 
-    else if (
-      cellHorizontal[rowIndex] === cellHorizontal[rowIndex + 1] &&
-      cellHorizontal[rowIndex] === cellHorizontal[rowIndex + 2] &&
-      cellHorizontal[rowIndex] === cellHorizontal[rowIndex + 3]
-    ) return cellHorizontal[rowIndex]
+    if (
+      rowToCheck[rowIndex] === rowToCheck[rowIndex - 1] &&
+      rowToCheck[rowIndex] === rowToCheck[rowIndex - 2] &&
+      rowToCheck[rowIndex] === rowToCheck[rowIndex - 3]
+    ) return rowToCheck[rowIndex]
+
+    if (
+      colToCheck[colWithTurn] === colToCheck[colWithTurn + 1] &&
+      colToCheck[colWithTurn] === colToCheck[colWithTurn + 2] &&
+      colToCheck[colWithTurn] === colToCheck[colWithTurn + 3]
+    ) return colToCheck[colWithTurn]
+
+    // Validation diag right to left
+
+    if (
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex > 0 && colWithTurn < 5) && boardToCheck[rowIndex - 1][colWithTurn + 1]) &&
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex > 1 && colWithTurn < 4) && boardToCheck[rowIndex - 2][colWithTurn + 2]) &&
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex > 2 && colWithTurn < 3) && boardToCheck[rowIndex - 3][colWithTurn + 3])
+    ) return boardToCheck[rowIndex][colWithTurn]
+
+    if (
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex < 6 && colWithTurn < 5) && boardToCheck[rowIndex + 1][colWithTurn + 1]) &&
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex < 5 && colWithTurn < 4) && boardToCheck[rowIndex + 2][colWithTurn + 2]) &&
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex < 4 && colWithTurn < 3) && boardToCheck[rowIndex + 3][colWithTurn + 3])
+    ) return boardToCheck[rowIndex][colWithTurn]
 
     return null
   }
@@ -58,10 +118,12 @@ function App () {
       colIndex: colIndexWithTurn
     })
 
+    console.log(newWinner)
+
     if (newWinner) {
       confetti()
       setWinner(newWinner)
-    }
+    } // else if (!newBoard.includes(null)) setWinner(false)
   }
 
   return (
@@ -78,7 +140,7 @@ function App () {
                       <Square
                         key={`${rowIndex}-${colIndex}`}
                         index={colIndex}
-                        updateBoard={() => updateBoard({ rowIndex, colIndex })}
+                        updateBoard={() => updateBoard({ rowIndex })}
                       >
                         {cell}
                       </Square>
