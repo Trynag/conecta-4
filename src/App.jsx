@@ -6,16 +6,15 @@ import confetti from 'canvas-confetti'
 
 // Mantener la fila, mover columna
 
-function App () {
+function App() {
   const [turn, setTurn] = useState(TURNS.X)
   const [board, setBoard] = useState(Array.from({ length: 7 }, () => Array(6).fill(null)))
   const [winner, setWinner] = useState(null)
 
-  const checkWinner = ({ boardToCheck, rowIndex, colIndex }) => {
+  const checkWinner = ({ boardToCheck, rowIndex }) => {
     console.clear()
 
     let colWithTurn
-    let rowWithTurn
 
     for (let col = 6; col >= 0; col--) {
       if (boardToCheck[rowIndex][col - 1] === null || col === 0) {
@@ -36,10 +35,6 @@ function App () {
       Row: rowToCheck
     })
     console.table(boardToCheck)
-
-    // Validate column way
-
-    console.log(colWithTurn, rowWithTurn, rowIndex)
     console.log('Col')
     console.table({
       original: colToCheck[colWithTurn],
@@ -47,7 +42,6 @@ function App () {
       eval2: colToCheck[colWithTurn + 2],
       eval3: colToCheck[colWithTurn + 3]
     })
-    console.log('')
     console.log('Row')
     console.table({
       original: rowToCheck[rowIndex],
@@ -55,6 +49,15 @@ function App () {
       eval2: rowToCheck[rowIndex + 2],
       eval3: rowToCheck[rowIndex + 3]
     })
+    console.log('Dig right')
+    // console.log((rowIndex < 6 && colWithTurn < 5) && `${rowIndex + 1} - ${colWithTurn + 1} - ${boardToCheck[rowIndex + 1][colWithTurn + 1]}`)
+    // console.log(`${rowIndex} - ${colWithTurn}`)
+    // console.table({
+    //   original: boardToCheck[rowIndex][colWithTurn],
+    //   eval1: (rowIndex < 6 && colWithTurn < 5) && boardToCheck[rowIndex + 1][colWithTurn + 1],
+    //   eval2: (rowIndex < 5 && colWithTurn < 4) && boardToCheck[rowIndex + 2][colWithTurn + 2],
+    //   eval3: (rowIndex < 4 && colWithTurn < 3) && boardToCheck[rowIndex + 3][colWithTurn + 3]
+    // })
 
     if (
       rowToCheck[rowIndex] === rowToCheck[rowIndex + 1] &&
@@ -73,6 +76,20 @@ function App () {
       colToCheck[colWithTurn] === colToCheck[colWithTurn + 2] &&
       colToCheck[colWithTurn] === colToCheck[colWithTurn + 3]
     ) return colToCheck[colWithTurn]
+
+    // Validation diag right to left
+
+    if (
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex > 0 && colWithTurn < 5) && boardToCheck[rowIndex - 1][colWithTurn + 1]) &&
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex > 1 && colWithTurn < 4) && boardToCheck[rowIndex - 2][colWithTurn + 2]) &&
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex > 2 && colWithTurn < 3) && boardToCheck[rowIndex - 3][colWithTurn + 3])
+    ) return boardToCheck[rowIndex][colWithTurn]
+
+    if (
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex < 6 && colWithTurn < 5) && boardToCheck[rowIndex + 1][colWithTurn + 1]) &&
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex < 5 && colWithTurn < 4) && boardToCheck[rowIndex + 2][colWithTurn + 2]) &&
+      boardToCheck[rowIndex][colWithTurn] === ((rowIndex < 4 && colWithTurn < 3) && boardToCheck[rowIndex + 3][colWithTurn + 3])
+    ) return boardToCheck[rowIndex][colWithTurn]
 
     return null
   }
@@ -121,7 +138,7 @@ function App () {
                       <Square
                         key={`${rowIndex}-${colIndex}`}
                         index={colIndex}
-                        updateBoard={() => updateBoard({ rowIndex, colIndex })}
+                        updateBoard={() => updateBoard({ rowIndex })}
                       >
                         {cell}
                       </Square>
