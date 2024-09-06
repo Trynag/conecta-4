@@ -6,9 +6,10 @@ import confetti from 'canvas-confetti'
 
 // Mantener la fila, mover columna
 
-function App () {
+function App() {
   const [turn, setTurn] = useState(TURNS.X)
   const [board, setBoard] = useState(Array.from({ length: 7 }, () => Array(6).fill(null)))
+
   const [winner, setWinner] = useState(null)
 
   const checkWinner = ({ boardToCheck, rowIndex }) => {
